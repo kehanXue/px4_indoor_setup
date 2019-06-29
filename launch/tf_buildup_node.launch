@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<launch>
+    <node pkg="px4_indoor_setup"
+          name="tf_buildup_node"
+          type="tf_buildup_node"
+          output="screen">
+        <param name="px4_enu_frame" value="local_origin"/>
+        <param name="vo_flu_frame" value="camera_link"/>
+    </node>
+</launch>
