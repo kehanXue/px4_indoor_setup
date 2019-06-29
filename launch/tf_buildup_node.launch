@@ -5,6 +5,6 @@
           type="tf_buildup_node"
           output="screen">
         <param name="px4_enu_frame" value="local_origin"/>
-        <param name="vo_flu_frame" value="camera_link"/>
+        <param name="vo_flu_frame" value="camera_odom_frame"/>
     </node>
 </launch>
