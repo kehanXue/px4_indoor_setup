@@ -138,6 +138,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(tf_buildup_node src/tf_buildup_node.cpp)
+add_executable(remap_pose_node src/remap_pose_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -151,6 +152,10 @@ add_executable(tf_buildup_node src/tf_buildup_node.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(tf_buildup_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(remap_pose_node
   ${catkin_LIBRARIES}
 )
 
