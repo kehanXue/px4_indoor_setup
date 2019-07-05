@@ -39,6 +39,7 @@ int main(int argc, char** argv)
     }
 
     geometry_msgs::PoseWithCovarianceStamped cur_pose_cov;
+    ROS_INFO("Start streaming!");
     while (ros::ok())
     {
         cur_pose_cov.header.frame_id = "camera_pose_frame";
