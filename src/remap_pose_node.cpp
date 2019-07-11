@@ -22,6 +22,9 @@ void rs_odom_cb(const nav_msgs::Odometry::ConstPtr& msg)
 
 int main(int argc, char** argv)
 {
+
+    sleep(15);
+
     ros::init(argc, argv, "remap_pose_node");
     ros::NodeHandle nh("~");
 
@@ -39,10 +42,13 @@ int main(int argc, char** argv)
     }
 
     geometry_msgs::PoseWithCovarianceStamped cur_pose_cov;
-    ROS_INFO("Start streaming!");
+
+    std::cout << "\033[32m" << "Start vision pose information message!"
+              << "\033[0m" << std::endl;
+
     while (ros::ok())
     {
-        cur_pose_cov.header.frame_id = "camera_pose_frame";
+        cur_pose_cov.header.frame_id = "camera_pose_frame";     // TODO
         cur_pose_cov.header.stamp = ros::Time::now();
         cur_pose_cov.pose = rs_current_odom.pose;
         vision_pose_pub.publish(cur_pose_cov);
@@ -54,3 +60,4 @@ int main(int argc, char** argv)
     return 0;
 
 }
+
