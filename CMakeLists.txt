@@ -23,12 +23,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(tf_buildup_node src/tf_buildup_node.cpp)
 add_executable(remap_pose_node src/remap_pose_node.cpp)
-
-target_link_libraries(tf_buildup_node
-  ${catkin_LIBRARIES}
-)
 
 target_link_libraries(remap_pose_node
   ${catkin_LIBRARIES}
