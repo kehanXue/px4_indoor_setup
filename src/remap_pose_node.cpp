@@ -8,16 +8,18 @@
 #include <mavros_msgs/State.h>
 
 mavros_msgs::State px4_current_state;
-nav_msgs::Odometry rs_current_odom;
+
+nav_msgs::Odometry zed_current_odom;
 
 void px4_state_cb(const mavros_msgs::State::ConstPtr& msg)
 {
     px4_current_state = *msg;
 }
 
-void rs_odom_cb(const nav_msgs::Odometry::ConstPtr& msg)
+
+void zed_odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
-    rs_current_odom = *msg;
+    zed_current_odom = *msg;
 }
 
 int main(int argc, char** argv)
@@ -29,10 +31,10 @@ int main(int argc, char** argv)
     ros::NodeHandle nh("~");
 
     ros::Subscriber px4_state_sub = nh.subscribe<mavros_msgs::State>("/mavros/state", 1, px4_state_cb);
-    ros::Subscriber rs_odom_sub = nh.subscribe<nav_msgs::Odometry>("/camera/odom/sample", 1, rs_odom_cb);
+    ros::Subscriber zed_odom_sub = nh.subscribe<nav_msgs::Odometry>("/zed/zed_node/odom", 1, zed_odom_cb);
     ros::Publisher  vision_pose_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/mavros/vision_pose/pose_cov", 1);
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(45);
 
 
     while (ros::ok() && !px4_current_state.connected)
@@ -50,7 +52,7 @@ int main(int argc, char** argv)
     {
         cur_pose_cov.header.frame_id = "camera_pose_frame";     // TODO
         cur_pose_cov.header.stamp = ros::Time::now();
-        cur_pose_cov.pose = rs_current_odom.pose;
+        cur_pose_cov.pose = zed_current_odom.pose;
         vision_pose_pub.publish(cur_pose_cov);
 
         ros::spinOnce();
