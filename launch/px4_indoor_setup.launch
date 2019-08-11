@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <launch>
 
-    <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
+    <include file="$(find zed_wrapper)/launch/zed.launch"/>
     <include file="$(find mavros)/launch/px4.launch"/>
 
     <node pkg="px4_indoor_setup"
