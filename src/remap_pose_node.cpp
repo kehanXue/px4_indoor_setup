@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
     while (ros::ok())
     {
-        cur_pose_cov.header.frame_id = "camera_pose_frame";     // TODO
+        cur_pose_cov.header.frame_id = "odom";     // TODO
         cur_pose_cov.header.stamp = ros::Time::now();
         cur_pose_cov.pose = zed_current_odom.pose;
         vision_pose_pub.publish(cur_pose_cov);
