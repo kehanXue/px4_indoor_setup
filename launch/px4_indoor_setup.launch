@@ -9,5 +9,7 @@
           type="remap_pose_node"
           output="screen"
           required="true">
+        <param name="odom_topic_name" value="/odometry/filtered"/>
+        <!--        <param name="odom_topic_name" value="/zed/zed_node/odom"/>-->
     </node>
 </launch>

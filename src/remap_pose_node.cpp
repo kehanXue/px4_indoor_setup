@@ -9,7 +9,7 @@
 
 mavros_msgs::State px4_current_state;
 
-nav_msgs::Odometry zed_current_odom;
+nav_msgs::Odometry vision_current_odom;
 
 void px4_state_cb(const mavros_msgs::State::ConstPtr& msg)
 {
@@ -17,9 +17,9 @@ void px4_state_cb(const mavros_msgs::State::ConstPtr& msg)
 }
 
 
-void zed_odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
+void vision_odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
-    zed_current_odom = *msg;
+    vision_current_odom = *msg;
 }
 
 int main(int argc, char** argv)
@@ -30,8 +30,23 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "remap_pose_node");
     ros::NodeHandle nh("~");
 
+    const std::string &node_name = ros::this_node::getName();
+    std::string odom_topic_name = "/odom/example";
+
+
+    if (nh.hasParam("odom_topic_name"))
+    {
+        nh.getParam("odom_topic_name", odom_topic_name);
+        ROS_INFO("%s, use odom_topic_name %s", node_name.c_str(), odom_topic_name.c_str());
+    }
+    else
+    {
+        ROS_WARN("%s, use the default model %s", node_name.c_str(), odom_topic_name.c_str());
+    }
+
+
     ros::Subscriber px4_state_sub = nh.subscribe<mavros_msgs::State>("/mavros/state", 1, px4_state_cb);
-    ros::Subscriber zed_odom_sub = nh.subscribe<nav_msgs::Odometry>("/zed/zed_node/odom", 1, zed_odom_cb);
+    ros::Subscriber vision_odom_sub = nh.subscribe<nav_msgs::Odometry>(odom_topic_name, 1, vision_odom_cb);
     ros::Publisher  vision_pose_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/mavros/vision_pose/pose_cov", 1);
 
     ros::Rate loop_rate(45);
@@ -50,9 +65,9 @@ int main(int argc, char** argv)
 
     while (ros::ok())
     {
-        cur_pose_cov.header.frame_id = "odom";     // TODO
+        cur_pose_cov.header.frame_id = vision_current_odom.header.frame_id;
         cur_pose_cov.header.stamp = ros::Time::now();
-        cur_pose_cov.pose = zed_current_odom.pose;
+        cur_pose_cov.pose = vision_current_odom.pose;
         vision_pose_pub.publish(cur_pose_cov);
 
         ros::spinOnce();
