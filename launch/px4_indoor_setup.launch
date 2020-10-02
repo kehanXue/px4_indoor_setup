@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <launch>
-
-    <include file="$(find zed_wrapper)/launch/zed.launch"/>
-    <include file="$(find mavros)/launch/px4.launch"/>
-
     <node pkg="px4_indoor_setup"
           name="remap_pose_node"
           type="remap_pose_node"
+          args="--vio_topic_type=PoseWithCovarianceStamped --vio_topic_name=/ov_msckf/poseimu --rotation_y=1.57079632"
           output="screen"
           required="true">
     </node>

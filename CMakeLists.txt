@@ -12,10 +12,12 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
   tf2_ros
-)
+  )
+
+find_package(gflags)
 
 catkin_package(
-CATKIN_DEPENDS geometry_msgs mavros mavros_msgs roscpp std_msgs tf2 tf2_ros
+  CATKIN_DEPENDS geometry_msgs mavros mavros_msgs roscpp std_msgs tf2 tf2_ros
 )
 
 include_directories(
@@ -27,5 +29,6 @@ add_executable(remap_pose_node src/remap_pose_node.cpp)
 
 target_link_libraries(remap_pose_node
   ${catkin_LIBRARIES}
-)
+  gflags
+  )
 
